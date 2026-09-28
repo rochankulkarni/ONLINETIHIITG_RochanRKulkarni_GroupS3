@@ -32,14 +32,10 @@ In underwater optical wireless communication, water turbidity changes the receiv
 └── README.md
 ```
 
-## Status
-
-- **Week 1:** Problem understanding, literature review, and repository setup. Dataset expected by the end of Week 1.
-- Further sections (setup instructions, how to run, results) will be added as the project progresses.
 
 ## Tools & Libraries
 
-Python, Jupyter/Google Colab, NumPy, Pandas, Matplotlib/Plotly, Scikit-learn.
+Python, Jupyter/Google Colab, NumPy, Pandas, Matplotlib/Pyplot, Scikit-learn, seaborn.
 
 ## Notes
 

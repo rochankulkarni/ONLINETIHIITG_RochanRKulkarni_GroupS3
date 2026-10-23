@@ -66,15 +66,15 @@ print("[✓ SUCCESS]: Preprocessing components successfully packed.")
 
 ```text
 =========================================================
-⚙️ RUNNING MASTER PIPELINE RE-ENGINEERING (DATASET V1)
+ RUNNING MASTER PIPELINE RE-ENGINEERING (DATASET V1)
 =========================================================
 
-📡 [SYSTEM DIAGNOSTIC MAPPING]:
+ [SYSTEM DIAGNOSTIC MAPPING]:
   • Feature column mapped to: 'Analog Voltage'
   • Target column mapped to: 'Binary bit S'
   • Condition category column mapped to: 'NTU'
 
-📋 [ PIPELINE ARTIFACT GENERATION METRICS ]
+ [ PIPELINE ARTIFACT GENERATION METRICS ]
   • Processed Dataset Location: 'uwoc_dataset_v1_frozen/'
   • Stratified Training Feature Shape : (64, 1)
   • Stratified Testing Feature Shape  : (16, 1)

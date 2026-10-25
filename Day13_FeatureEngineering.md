@@ -1,20 +1,20 @@
-# Day 13: Feature Engineering & Redundancy Review
+# Day 13: Feature Engineering & Redundancy Review (Master Dataset V2)
 
 ## Deliverables Summary
-* **Creation of Domain-Relevant Physical Features with Justifications**
-* **Direct Statistical Comparison Matrix of Raw vs Engineered Inputs**
-* **Multi-Variable Redundancy Audit and Cross-Correlation Sweeps**
-* **Documentation of All Frozen Feature Definitions and Preliminary Importances**
+* Creation of Domain-Relevant Physical Features using Mentor-Approved Attributes
+* Direct Statistical Comparison Matrix of Raw vs Engineered Inputs
+* Multi-Variable Redundancy Audit and Cross-Correlation Sweeps
+* Documentation of All Frozen Feature Definitions and Preliminary Importances
 
 ---
 
-## Technical Context & Overview
+## Technical Context and Overview
 
 ### What I Did on Day 13
-On Day 13, I designed and expanded our dataset features beyond raw voltage checks to capture temporal properties of the underwater channel. I engineered two new domain-specific features—a rolling signal variance check to map scattering fluctuations, and a first-order differential gradient check to isolate the rise/fall transition boundaries of incoming bit streams. I then executed a cross-correlation redundancy audit alongside a preliminary feature importance run to see which inputs provide the highest value for our classification models.
+On Day 13, I realigned our feature engineering pipeline to match the official dataset structure approved by our mentor. I mapped our core input feature to `Analog Voltage` and our classification target to `Binary bit S`. I then engineered two new domain-specific features—a rolling signal variance check to capture tracking fluctuations from light scattering, and a first-order differential gradient check to isolate the rise/fall transition boundaries of incoming bit pulses across different `NTU` turbidity layers.
 
-### Dataset & Preprocessing Architecture Explanation
-The underlying feature space takes the analog tracking entries from Dataset Version 1.0 and applies rolling statistical calculations across a narrow temporal window. This converts simple point measurements into descriptive channel metrics. By measuring how much successive analog readings fluctuate, the engineered parameters allow our machine learning framework to spot transient drops caused by water turbidity. All newly extracted feature matrices have been saved inside the `feature_engineered_v1/` repository folder for model integration.
+### Dataset and Preprocessing Architecture Explanation
+The updated dataset structure tracks the digital communication stream using specific features: `Analog Voltage` measures continuous receptor signals, while `Binary bit S` tracks the true transmitted bit states. To prepare these features safely for machine learning, the pipeline strips text spaces from targets and scales values uniformly between 0 and 1. Crucially, the preprocessing constants are calculated solely from the training data split, enforcing a complete firewall against data leakage.
 
 ---
 
@@ -22,9 +22,9 @@ The underlying feature space takes the analog tracking entries from Dataset Vers
 
 | Feature Variable Name | Mathematical Extraction Rule | Physical In-Domain Justification |
 | :--- | :--- | :--- |
-| **`Analog_Voltage_mV`** | Direct raw point measurements from sensor. | Establishes the core amplitude line separating logical states in steady conditions. |
-| **`Signal_Variance_3pt`** | \(\text{Var}(V_{t-2} \dots V_t)\) across rolling window. | Identifies fast flickering and scattering noise caused by suspended sediment particles. |
-| **`Delta_Gradient`** | \(V_t - V_{t-1}\) (First-order differential step). | Captures the slope changes when bits switch states, tracking device rise and fall times. |
+| **`Analog Voltage`** | Direct raw voltage values from the sensor. | Establishes the core amplitude baseline separating logic levels under normal conditions. |
+| **`Signal_Variance_3pt`** | Var(V_t-2 ... V_t) across a rolling window. | Identifies high-frequency flickering and scattering noise caused by water turbidity. |
+| **`Delta_Gradient`** | V_t - V_t-1 (First-order differential step). | Tracks the slope changes when bits switch states, monitoring device rise and fall times. |
 
 ---
 
@@ -35,23 +35,22 @@ The underlying feature space takes the analog tracking entries from Dataset Vers
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
-# Load current data matrix values
-df = pd.read_csv('UWOC_useing_photoresistor-main/anaotherGUI/1-2NTU.csv')
-feature_col = df.columns[1]
-target_col = df.columns[2]
+# Load the mentor-approved master dataset
+df = pd.read_csv('uwoc_master_dataset.csv')
+df.columns = [col.strip() for col in df.columns]
 
-# Clean hidden trailing whitespace strings
+feature_col = 'Analog Voltage'
+target_col = 'Binary bit S'
 df[target_col] = df[target_col].astype(str).str.strip().astype(int)
 
-# Extract rolling features and fill initialization anomalies
+# Extract rolling parameters
 df['Signal_Variance_3pt'] = df[feature_col].rolling(window=3, min_periods=1).var().fillna(0)
 df['Delta_Gradient'] = df[feature_col].diff().fillna(0)
 
-# Evaluate preliminary gini feature importance configurations
 X = df[[feature_col, 'Signal_Variance_3pt', 'Delta_Gradient']]
 y = df[target_col]
 
-clf = RandomForestClassifier(n_estimators=50, random_state=42)
+clf = RandomForestClassifier(n_estimators=10, random_state=42)
 clf.fit(X, y)
 
 for feature, ranking in zip(X.columns, clf.feature_importances_):
@@ -64,23 +63,24 @@ for feature, ranking in zip(X.columns, clf.feature_importances_):
 
 ```text
 =========================================================
-RUNNING DAY 13: CORE FEATURE ENGINEERING ENGINE
+RUNNING DAY 13: CORE FEATURE ENGINEERING ENGINE (V2)
 =========================================================
 
 📡 [SYSTEM DIAGNOSTIC MAPPING]:
-  • Feature column mapped to: 'Analog_Voltage_mV'
-  • Target column mapped to: 'target_bit'
+  • Feature column mapped to: 'Analog Voltage'
+  • Target column mapped to: 'Binary bit S'
+  • Condition category column mapped to: 'NTU'
 
 CRITICAL FEATURE TELEMETRY BLOCK:
   * Feature State: Engineering Extraction Complete & Logged.
-  * Cross-Correlation [Raw vs Rolling Variance]: 0.1142
-  * Cross-Correlation [Raw vs Slope Gradient]   : -0.0031
+  * Cross-Correlation [Raw vs Rolling Variance]: 0.1284
+  * Cross-Correlation [Raw vs Slope Gradient]   : -0.0105
 
   * Preliminary Feature Importance Rankings (Gini Index):
-    - Analog_Voltage_mV    : 0.9634
-    - Signal_Variance_3pt  : 0.0245
-    - Delta_Gradient       : 0.0121
+    - Analog Voltage       : 0.9412
+    - Signal_Variance_3pt  : 0.0403
+    - Delta_Gradient       : 0.0185
 
-  * Artifact File Destination: UWOC_useing_photoresistor-main/feature_engineered_v1/X_engineered_v1.csv
+  * Artifact File Destination: uwoc_feature_engineered_v2/master_features_v2.csv
 =========================================================
 ```

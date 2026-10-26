@@ -78,12 +78,4 @@ Even though our machine learning pipeline is highly robust, extreme environmenta
 
 ---
 
-## Proposed Week-4 Final Direction Strategy
 
-### [ Placeholder Verification Log - Awaiting Milestone Sign-off ]
-*The technical performance logs, error analysis profiles, and data charts are fully executed, locked, and documented. This section remains open as an active log placeholder to register our mentor's review feedback, adjustments, and formal approval for our Week-4 final deployment direction during our upcoming milestone defense meeting.*
-
-### Recommended Week-4 Implementation Path
-1. **Embedded Hardware Deployment:** Export our best-tuned model configuration settings to our physical Raspberry Pi receiver script (`ras_pi.py`).
-2. **Real-Time Testing:** Run real-time decoding tests using the `Real_time_Graph_analysis.py` architecture to assess processing latency during live underwater data transmissions.
-3. **Multi-NTU Field Validation:** Test the integrated receiver stack across our master dataset's variable turbidity tiers (`2-3 NTU`, `3-4 NTU`, `4-5 NTU`) to document the final system performance profile for our capstone graduation defense.

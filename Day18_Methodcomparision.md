@@ -7,7 +7,7 @@
 
 ---
 
-## 📊 Slide 1: Comprehensive Unified Comparison Matrix
+##  Slide 1: Comprehensive Unified Comparison Matrix
 
 The table below logs the empirical performance scores evaluated on the isolated Dataset Version 1.0 test partition (derived exclusively from the clear-water `1-2NTU` master entries):
 
@@ -21,7 +21,7 @@ The table below logs the empirical performance scores evaluated on the isolated 
 
 ---
 
-## 📉 Slide 2: Structural Constraints and Risk Diagnosis
+##  Slide 2: Structural Constraints and Risk Diagnosis
 
 ### 1. Overfitting Analysis and Data Limitations
 Because the baseline `1-2NTU` tracking blocks within the master dataset contain a wide, unattenuated voltage gap between logic states, every single algorithmic method registers an absolute 100% success matrix. This serves as an invaluable structural validation of our code pipeline architecture. 
@@ -34,7 +34,7 @@ However, this represents an idealized data limitation. Presenting these perfect 
 
 ---
 
-## 🎯 Slide 3: Strategic Candidate Shortlist for Deeper Experiments
+##  Slide 3: Strategic Candidate Shortlist for Deeper Experiments
 
 To prepare for cross-condition turbidity testing while balancing embedded hardware processing limits, the following two models are shortlisted for deeper experimentation:
 
